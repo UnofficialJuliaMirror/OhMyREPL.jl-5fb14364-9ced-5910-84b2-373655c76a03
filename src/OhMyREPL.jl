@@ -20,9 +20,6 @@ include("prompt.jl")
 
 import .BracketInserter.enable_autocomplete_brackets
 
-include("overprint.jl")
-include("progress.jl")
-include("logger_core.jl")
 
 
 function colorscheme!(name::String)
@@ -90,16 +87,6 @@ function __init__()
     # command-line -- do not activate OhMyREPL functionality
     if (options.isinteractive != 1) && options.commands != C_NULL
         return
-    end
-
-
-    # Set up the logger
-    global_logger(OhMyLogger(stderr))
-    atexit() do
-        logger = global_logger()
-        if logger isa OhMyLogger
-            global_logger(OhMyLogger(Core.stderr, min_enabled_level(logger)))
-        end
     end
 
     # Setup REPL functionality
